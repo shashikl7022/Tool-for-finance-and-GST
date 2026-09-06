@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow Hub | Personal Productivity & Utilities</title>
+  <meta name="description" content="All-in-one productivity suite with Pomodoro timer, task manager, live scratchpad, QR generator, and palette tools. Free and open source.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+  <!-- Global Background Glows -->
+  <div class="bg-glow glow-1" aria-hidden="true"></div>
+  <div class="bg-glow glow-2" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <div class="brand-text">
+          <h1>FocusFlow</h1>
+          <span class="brand-tag">Workspace Hub</span>
+        </div>
+      </div>
+
+      <!-- Live Clock & Greeting -->
+      <div class="header-center">
+        <div class="live-clock" id="liveClock">00:00:00</div>
+        <div class="live-greeting" id="liveGreeting">Welcome</div>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="header-actions">
+        <!-- Sound Toggle -->
+        <button id="soundToggleBtn" class="icon-btn" title="Toggle Sound Chimes" aria-label="Toggle Sound">
+          <span class="btn-icon" id="soundIcon">🔔</span>
+        </button>
+
+        <!-- Theme Selector -->
+        <div class="theme-select-wrapper">
+          <label for="themeSelect" class="sr-only">Choose Theme</label>
+          <select id="themeSelect" class="theme-select" aria-label="Select Color Theme">
+            <option value="dark">🌙 Deep Dark</option>
+            <option value="light">☀️ Clean Light</option>
+            <option value="cyberpunk">👾 Cyberpunk</option>
+            <option value="emerald">🌲 Emerald</option>
+          </select>
+        </div>
+
+        <!-- Shortcuts Help Button -->
+        <button id="shortcutsBtn" class="icon-btn" title="Keyboard Shortcuts" aria-label="Keyboard Shortcuts">
+          <span class="btn-icon">⌨️</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" aria-label="App Navigation">
+      <button class="nav-tab active" data-tab="dashboard">
+        <span class="tab-icon">📊</span> Overview
+      </button>
+      <button class="nav-tab" data-tab="timer">
+        <span class="tab-icon">⏱️</span> Focus Timer
+      </button>
+      <button class="nav-tab" data-tab="tasks">
+        <span class="tab-icon">✅</span> Tasks
+      </button>
+      <button class="nav-tab" data-tab="notes">
+        <span class="tab-icon">📝</span> Scratchpad
+      </button>
+      <button class="nav-tab" data-tab="tools">
+        <span class="tab-icon">🛠️</span> Mini Utilities
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content Views -->
+  <main class="main-content">
+
+    <!-- VIEW 1: DASHBOARD OVERVIEW -->
+    <section id="view-dashboard" class="tab-view active">
+      <div class="dashboard-hero">
+        <div class="hero-quote">
+          <p id="dailyQuote">"Small steps every day lead to massive results."</p>
+          <span id="quoteAuthor">— FocusFlow Daily</span>
+        </div>
+        <div class="quick-stats">
+          <div class="stat-card">
+            <span class="stat-label">Sessions Completed</span>
+            <span class="stat-value" id="dashCompletedSessions">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Active Tasks</span>
+            <span class="stat-value" id="dashActiveTasks">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Focus Minutes</span>
+            <span class="stat-value" id="dashTotalMinutes">0m</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Mini Timer Card -->
+        <div class="card card-interactive" id="dashTimerCard">
+          <div class="card-header">
+            <h3>⏱️ Quick Timer</h3>
+            <span class="badge" id="dashTimerMode">Pomodoro (25m)</span>
+          </div>
+          <div class="dash-timer-body">
+            <div class="dash-timer-display" id="dashTimerTime">25:00</div>
+            <div class="dash-timer-controls">
+              <button class="btn btn-primary" id="dashTimerToggle">Start Focus</button>
+              <button class="btn btn-secondary" id="dashTimerReset">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Tasks Preview Card -->
+        <div class="card" id="dashTasksCard">
+          <div class="card-header">
+            <h3>✅ Priority Focus Tasks</h3>
+            <button class="btn-link" id="gotoTasksLink">Manage All &rarr;</button>
+          </div>
+          <div class="card-body">
+            <ul class="task-list task-list-compact" id="dashTaskList">
+              <li class="empty-state">No active tasks. Add one to get started!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: FULL FOCUS TIMER -->
+    <section id="view-timer" class="tab-view">
+      <div class="timer-container card">
+        <!-- Mode Tabs -->
+        <div class="timer-mode-selector">
+          <button class="mode-btn active" data-mode="pomodoro">Pomodoro (25m)</button>
+          <button class="mode-btn" data-mode="shortBreak">Short Break (5m)</button>
+          <button class="mode-btn" data-mode="longBreak">Long Break (15m)</button>
+        </div>
+
+        <!-- SVG Circular Ring -->
+        <div class="timer-circle-wrapper">
+          <svg class="timer-svg" viewBox="0 0 280 280">
+            <circle class="timer-circle-bg" cx="140" cy="140" r="120" />
+            <circle class="timer-circle-progress" id="timerProgressCircle" cx="140" cy="140" r="120" />
+          </svg>
+          <div class="timer-center-content">
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="timer-status" id="timerStatus">Ready to focus</div>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="timer-controls">
+          <button class="btn btn-primary btn-large" id="timerStartPauseBtn">
+            <span id="timerActionText">Start</span>
+          </button>
+          <button class="btn btn-secondary" id="timerResetBtn">Reset</button>
+          <button class="btn btn-ghost" id="timerSkipBtn" title="Skip Session">Skip ⏭️</button>
+        </div>
+
+        <!-- Timer Options & Sound Testing -->
+        <div class="timer-settings-row">
+          <div class="setting-item">
+            <label for="workDurationInput">Work (mins):</label>
+            <input type="number" id="workDurationInput" min="1" max="90" value="25">
+          </div>
+          <div class="setting-item">
+            <label for="breakDurationInput">Break (mins):</label>
+            <input type="number" id="breakDurationInput" min="1" max="60" value="5">
+          </div>
+          <div class="setting-item">
+            <button class="btn btn-sm btn-secondary" id="testChimeBtn">Test Chime 🔔</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: TASK MANAGER -->
+    <section id="view-tasks" class="tab-view">
+      <div class="card tasks-card">
+        <div class="card-header">
+          <h2>Task & Priority Checklist</h2>
+          <div class="task-filter-pills">
+            <button class="pill active" data-filter="all">All</button>
+            <button class="pill" data-filter="active">Active</button>
+            <button class="pill" data-filter="completed">Done</button>
+          </div>
+        </div>
+
+        <!-- New Task Form -->
+        <form class="task-form" id="taskForm">
+          <input type="text" id="taskInput" class="form-input" placeholder="What needs to be done? (Press Enter)" required autocomplete="off">
+          <select id="taskPriority" class="form-select" aria-label="Task Priority">
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent 🔥</option>
+          </select>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+
+        <!-- Tasks List -->
+        <div class="task-list-wrapper">
+          <ul class="task-list" id="taskList">
+            <!-- Dynamic task items inserted here -->
+          </ul>
+        </div>
+
+        <!-- Task Footer Bar -->
+        <div class="task-footer">
+          <span id="taskCounter">0 tasks left</span>
+          <button class="btn-link text-danger" id="clearCompletedBtn">Clear Completed</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: LIVE SCRATCHPAD -->
+    <section id="view-notes" class="tab-view">
+      <div class="card notes-card">
+        <div class="card-header">
+          <h2>Quick Scratchpad & Drafts</h2>
+          <div class="notes-actions">
+            <button class="btn btn-sm btn-secondary" id="copyNotesBtn" title="Copy to Clipboard">📋 Copy</button>
+            <button class="btn btn-sm btn-secondary" id="downloadNotesBtn" title="Save as File">💾 Export .md</button>
+            <button class="btn btn-sm btn-ghost text-danger" id="clearNotesBtn" title="Clear Scratchpad">Clear</button>
+          </div>
+        </div>
+
+        <div class="notes-body">
+          <textarea id="scratchpadText" class="notes-textarea" placeholder="Start typing thoughts, markdown notes, code snippets, or meeting minutes... Auto-saved locally!"></textarea>
+        </div>
+
+        <div class="notes-footer">
+          <div class="notes-meta">
+            <span id="charCount">0 characters</span> •
+            <span id="wordCount">0 words</span> •
+            <span id="readingTime">&lt; 1 min read</span>
+          </div>
+          <span class="save-status" id="saveStatus">✓ Saved to browser</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: MINI UTILITIES -->
+    <section id="view-tools" class="tab-view">
+      <div class="grid-2col">
+        <!-- Tool 1: Instant QR Code Generator -->
+        <div class="card tool-card">
+          <div class="card-header">
+            <h3>📱 Instant QR Code Generator</h3>
+          </div>
+          <div class="tool-content">
+            <p class="tool-desc">Type any text, phone number, or URL to generate a scannable QR code instantly.</p>
+            <div class="qr-input-group">
+              <input type="text" id="qrTextInput" class="form-input" placeholder="https://example.com" value="https://github.com">
+              <button class="btn btn-primary" id="generateQrBtn">Generate</button>
+            </div>
+            
+            <div class="qr-display-area">
+              <canvas id="qrCanvas" width="220" height="220" class="qr-canvas"></canvas>
+            </div>
+
+            <div class="qr-actions">
+              <button class="btn btn-secondary btn-sm" id="downloadQrBtn">📥 Download QR Code</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool 2: Harmonic Color Palette Generator -->
+        <div class="card tool-card">
+          <div class="card-header">
+            <h3>🎨 Color Palette Generator</h3>
+            <button class="btn btn-sm btn-primary" id="randomizePaletteBtn">New Palette 🎲</button>
+          </div>
+          <div class="tool-content">
+            <p class="tool-desc">Click any swatch or hex code to copy it instantly.</p>
+            <div class="palette-display" id="paletteContainer">
+              <!-- Swatches generated by app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool 3: Quick Percentage & Ratio Calculator -->
+        <div class="card tool-card full-width">
+          <div class="card-header">
+            <h3>🔢 Quick Percentage & Ratio Calculator</h3>
+          </div>
+          <div class="tool-content">
+            <div class="calc-grid">
+              <!-- What is X% of Y? -->
+              <div class="calc-box">
+                <span class="calc-title">What is</span>
+                <div class="calc-inputs">
+                  <input type="number" id="calcP1" class="form-input sm-input" placeholder="20" value="20">% of
+                  <input type="number" id="calcV1" class="form-input sm-input" placeholder="150" value="150">
+                </div>
+                <div class="calc-result" id="calcRes1">= 30.00</div>
+              </div>
+
+              <!-- X is what % of Y? -->
+              <div class="calc-box">
+                <span class="calc-title">Percentage of</span>
+                <div class="calc-inputs">
+                  <input type="number" id="calcV2" class="form-input sm-input" placeholder="45" value="45"> is what % of
+                  <input type="number" id="calcT2" class="form-input sm-input" placeholder="180" value="180">
+                </div>
+                <div class="calc-result" id="calcRes2">= 25.00%</div>
+              </div>
+
+              <!-- Percentage Change -->
+              <div class="calc-box">
+                <span class="calc-title">% Change</span>
+                <div class="calc-inputs">
+                  From <input type="number" id="calcFrom" class="form-input sm-input" placeholder="80" value="80">
+                  to <input type="number" id="calcTo" class="form-input sm-input" placeholder="100" value="100">
+                </div>
+                <div class="calc-result" id="calcRes3">= +25.00%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Keyboard Shortcuts Modal Dialog -->
+  <dialog id="shortcutsDialog" class="modal-dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⌨️ Keyboard Shortcuts</h3>
+        <button class="icon-btn close-modal" id="closeShortcutsBtn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <ul class="shortcuts-list">
+          <li><kbd>Space</kbd> <span>Start / Pause Focus Timer</span></li>
+          <li><kbd>R</kbd> <span>Reset Focus Timer</span></li>
+          <li><kbd>Alt</kbd> + <kbd>N</kbd> <span>Quick Focus on New Task input</span></li>
+          <li><kbd>Esc</kbd> <span>Close Modals / Overlays</span></li>
+        </ul>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>Built with ⚡ HTML5, Modern CSS & Vanilla JS • Ready for 100% Free Hosting on <strong>GitHub Pages</strong></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
