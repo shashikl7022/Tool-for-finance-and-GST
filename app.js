@@ -1,5 +1,5 @@
 /**
- * FocusFlow Hub - Interactive Application Logic
+ * Finance & GST Tools - Interactive Application Logic
  * Pure Vanilla JavaScript • Zero Dependencies • LocalStorage Persistence
  */
 
@@ -84,7 +84,7 @@
   }
 
   // Load persisted notes
-  state.notes = localStorage.getItem(STORAGE_KEYS.NOTES) || '# Welcome to FocusFlow Scratchpad\n\n- Brainstorm ideas here\n- Format in markdown or plain text\n- Automatically saved in real-time\n- Export to .md anytime!';
+  state.notes = localStorage.getItem(STORAGE_KEYS.NOTES) || '# Welcome to Finance & GST Tools Scratchpad\n\n- Brainstorm financial calculations and GST notes here\n- Format in markdown or plain text\n- Automatically saved in real-time\n- Export to .md anytime!';
 
   // ==========================================
   // 2. DOM ELEMENT REFERENCES
@@ -383,9 +383,9 @@
 
     // Tab title
     if (state.timer.isRunning) {
-      document.title = `(${timeStr}) FocusFlow`;
+      document.title = `(${timeStr}) Finance & GST Tools`;
     } else {
-      document.title = 'FocusFlow Hub | Personal Productivity & Utilities';
+      document.title = 'Finance & GST Tools | Personal Finance & Utilities';
     }
   }
 
@@ -698,7 +698,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `focusflow-notes-${new Date().toISOString().slice(0, 10)}.md`;
+    a.download = `finance-gst-notes-${new Date().toISOString().slice(0, 10)}.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

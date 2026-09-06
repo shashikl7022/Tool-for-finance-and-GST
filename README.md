@@ -1,8 +1,8 @@
-# ⚡ FocusFlow Hub
+# 💼 Finance & GST Tools
 
-> A modern, responsive personal productivity suite and interactive utility web application. Built with semantic HTML5, modern CSS3 (with dynamic custom properties, glassmorphism, and responsive grid), and pure vanilla JavaScript. Zero external dependencies, runs offline, and is **100% free to host forever on GitHub Pages**.
+> A modern, responsive personal finance, productivity, and GST calculation suite. Built with semantic HTML5, modern CSS3 (dynamic custom properties, glassmorphism, responsive grid), and pure vanilla JavaScript. Zero external dependencies, runs offline, and is **100% free to host forever on GitHub Pages**.
 
-![FocusFlow Preview](https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1200&q=80)
+![Finance & GST Tools Preview](https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1200&q=80)
 
 ---
 
