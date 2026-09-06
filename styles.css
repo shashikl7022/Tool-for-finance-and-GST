@@ -1211,6 +1211,57 @@ kbd {
   color: var(--text-secondary);
 }
 
+.auth-alert {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  display: none;
+  margin-top: 1.1rem;
+  margin-bottom: 0.5rem;
+  align-items: flex-start;
+  gap: 0.65rem;
+  line-height: 1.45;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.auth-alert.error {
+  display: flex;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.auth-alert.success {
+  display: flex;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+.auth-alert.info {
+  display: flex;
+  background: rgba(59, 130, 246, 0.14);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+}
+
+.auth-alert button.alert-link-btn {
+  color: inherit;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0;
+  display: inline;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.auth-alert button.alert-link-btn:hover {
+  filter: brightness(1.2);
+}
+
 .auth-tabs {
   display: flex;
   background: var(--bg-card);

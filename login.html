@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log In | FocusFlow Hub</title>
-  <meta name="description" content="Log in to your FocusFlow workspace to sync your focus sessions, tasks, and notes across devices.">
+  <title>Authentication & Workspace Login | FocusFlow Hub</title>
+  <meta name="description" content="Secure authentication for FocusFlow Hub. Create an account or log in with your registered credentials.">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 </head>
@@ -16,102 +16,94 @@
   <div class="auth-wrapper">
     <!-- Back to App Link -->
     <a href="index.html" class="auth-back-link">
-      <span>&larr;</span> Back to FocusFlow
+      <span>&larr;</span> Return to FocusFlow
     </a>
 
     <div class="card auth-card">
       <div class="auth-header">
         <div class="auth-brand-icon">⚡</div>
-        <h1 id="authTitle">Welcome Back</h1>
-        <p class="auth-subtitle" id="authSubtitle">Enter your credentials to access your workspace</p>
+        <h1 id="authTitle">Welcome to FocusFlow</h1>
+        <p class="auth-subtitle" id="authSubtitle">Create an account or sign in to authenticate</p>
+
+        <!-- Status / Error Alert Banner -->
+        <div id="authAlert" class="auth-alert" role="alert">
+          <span id="alertIcon">ℹ️</span>
+          <div id="alertMessage">Please create an account before logging in.</div>
+        </div>
       </div>
 
-      <!-- Mode Switcher Tabs (Sign In / Sign Up) -->
+      <!-- Mode Switcher Tabs (Sign In / Create Account) -->
       <div class="auth-tabs" role="tablist">
-        <button type="button" class="auth-tab active" id="tabSignIn" role="tab" aria-selected="true">Sign In</button>
-        <button type="button" class="auth-tab" id="tabSignUp" role="tab" aria-selected="false">Create Account</button>
+        <button type="button" class="auth-tab" id="tabSignIn" role="tab" aria-selected="false">Sign In</button>
+        <button type="button" class="auth-tab active" id="tabSignUp" role="tab" aria-selected="true">Create Account</button>
       </div>
 
-      <!-- Login / Signup Form -->
+      <!-- Main Form -->
       <form id="authForm" class="auth-form" novalidate>
-        <!-- Name Field (for Sign Up only) -->
-        <div class="form-group" id="nameGroup" style="display: none;">
-          <label for="nameInput">Full Name</label>
+        <!-- Full Name Field (Create Account mode) -->
+        <div class="form-group" id="nameGroup">
+          <label for="nameInput">Full Name *</label>
           <div class="input-with-icon">
             <span class="input-icon">👤</span>
             <input type="text" id="nameInput" class="form-input" placeholder="e.g. Shashi" autocomplete="name">
           </div>
         </div>
 
-        <!-- Email Field -->
+        <!-- Email Address Field -->
         <div class="form-group">
-          <label for="emailInput">Email Address</label>
+          <label for="emailInput">Email Address *</label>
           <div class="input-with-icon">
             <span class="input-icon">✉️</span>
-            <input type="email" id="emailInput" class="form-input" placeholder="you@example.com" required autocomplete="email">
+            <input type="email" id="emailInput" class="form-input" placeholder="shashi@example.com" required autocomplete="email">
           </div>
         </div>
 
         <!-- Password Field -->
         <div class="form-group">
           <div class="label-row">
-            <label for="passwordInput">Password</label>
-            <a href="#" id="forgotPasswordLink" class="btn-link sm-link">Forgot?</a>
+            <label for="passwordInput">Password *</label>
+            <a href="#" id="forgotPasswordLink" class="btn-link sm-link" style="display: none;">Forgot password?</a>
           </div>
           <div class="input-with-icon">
             <span class="input-icon">🔒</span>
-            <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+            <input type="password" id="passwordInput" class="form-input" placeholder="At least 6 characters" required autocomplete="current-password">
             <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Toggle password visibility">👁️</button>
           </div>
         </div>
 
+        <!-- Confirm Password Field (Create Account mode only) -->
+        <div class="form-group" id="confirmPasswordGroup">
+          <label for="confirmPasswordInput">Confirm Password *</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="confirmPasswordInput" class="form-input" placeholder="Repeat your password" autocomplete="new-password">
+            <button type="button" id="toggleConfirmPasswordBtn" class="toggle-password-btn" aria-label="Toggle confirm password visibility">👁️</button>
+          </div>
+        </div>
+
         <!-- Remember Me Checkbox -->
-        <div class="form-row-remember" id="rememberRow">
+        <div class="form-row-remember" id="rememberRow" style="display: none;">
           <label class="checkbox-label">
             <input type="checkbox" id="rememberMe" checked>
-            <span>Remember this device</span>
+            <span>Keep me logged in on this browser</span>
           </label>
         </div>
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary btn-large full-width" id="submitAuthBtn">
-          <span id="submitBtnText">Sign In to Workspace</span>
-        </button>
-
-        <!-- Quick One-Click Demo Login -->
-        <button type="button" class="btn btn-secondary full-width demo-btn" id="demoLoginBtn">
-          ⚡ One-Click Demo Login (Instant Access)
+          <span id="submitBtnText">Create Account</span>
         </button>
       </form>
 
-      <!-- Divider -->
-      <div class="auth-divider">
-        <span>OR CONTINUE WITH</span>
+      <!-- Registered Accounts Quick Preview Box -->
+      <div id="registeredAccountsBox" style="margin-top: 1.25rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+        <span id="registeredCountText">0 registered accounts found.</span>
       </div>
 
-      <!-- Social Login Buttons -->
-      <div class="social-login-grid">
-        <button type="button" class="btn btn-secondary social-btn" id="githubLoginBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-          GitHub
-        </button>
-        <button type="button" class="btn btn-secondary social-btn" id="googleLoginBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-          </svg>
-          Google
-        </button>
-      </div>
-
-      <!-- Footer Help -->
+      <!-- Footer Mode Switcher -->
       <div class="auth-footer-help">
-        <span id="toggleModeText">Don't have an account?</span>
-        <button type="button" class="btn-link" id="switchModeBtn">Create one free</button>
+        <span id="toggleModeText">Already registered?</span>
+        <button type="button" class="btn-link" id="switchModeBtn">Sign in with your account</button>
       </div>
     </div>
   </div>
@@ -124,27 +116,87 @@
     const savedTheme = localStorage.getItem('focusflow_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
-    // DOM references
+    // DOM Elements
     const tabSignIn = document.getElementById('tabSignIn');
     const tabSignUp = document.getElementById('tabSignUp');
     const authTitle = document.getElementById('authTitle');
     const authSubtitle = document.getElementById('authSubtitle');
+    const authAlert = document.getElementById('authAlert');
+    const alertIcon = document.getElementById('alertIcon');
+    const alertMessage = document.getElementById('alertMessage');
     const nameGroup = document.getElementById('nameGroup');
     const nameInput = document.getElementById('nameInput');
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
+    const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const rememberRow = document.getElementById('rememberRow');
     const submitBtnText = document.getElementById('submitBtnText');
     const authForm = document.getElementById('authForm');
     const switchModeBtn = document.getElementById('switchModeBtn');
     const toggleModeText = document.getElementById('toggleModeText');
     const togglePasswordBtn = document.getElementById('togglePasswordBtn');
-    const demoLoginBtn = document.getElementById('demoLoginBtn');
-    const githubLoginBtn = document.getElementById('githubLoginBtn');
-    const googleLoginBtn = document.getElementById('googleLoginBtn');
-    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPasswordBtn');
     const toastContainer = document.getElementById('toastContainer');
+    const registeredCountText = document.getElementById('registeredCountText');
 
-    let mode = 'signin'; // 'signin' | 'signup'
+    let mode = 'signup'; // default to 'signup' so users create account first!
+
+    // ==========================================
+    // USER REGISTRY IN LOCALSTORAGE
+    // ==========================================
+    const USERS_STORAGE_KEY = 'focusflow_registered_users';
+
+    function getRegisteredUsers() {
+      try {
+        const data = localStorage.getItem(USERS_STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveRegisteredUsers(users) {
+      localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+      updateRegisteredAccountsCounter();
+    }
+
+    function updateRegisteredAccountsCounter() {
+      const users = getRegisteredUsers();
+      if (users.length === 0) {
+        registeredCountText.innerHTML = '🔒 <em>Authentication is enforced: You must create an account first before logging in.</em>';
+      } else {
+        const names = users.map(u => u.name).join(', ');
+        registeredCountText.innerHTML = `🛡️ Registered user${users.length > 1 ? 's' : ''} on this device: <strong>${escapeHtml(names)}</strong>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Alert Banner Helper
+    function showAlert(type, icon, messageHtml) {
+      authAlert.className = `auth-alert ${type}`;
+      alertIcon.textContent = icon;
+      alertMessage.innerHTML = messageHtml;
+      authAlert.style.display = 'flex';
+
+      // Attach any action button in alert
+      const switchBtn = alertMessage.querySelector('.alert-link-btn');
+      if (switchBtn) {
+        switchBtn.addEventListener('click', () => {
+          setMode(switchBtn.getAttribute('data-target-mode') || 'signup');
+        });
+      }
+    }
+
+    function hideAlert() {
+      authAlert.style.display = 'none';
+    }
 
     function showToast(message, icon = '✨') {
       const toast = document.createElement('div');
@@ -156,118 +208,228 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      }, 3200);
     }
 
-    function setMode(newMode) {
+    // Set Mode: 'signup' or 'signin'
+    function setMode(newMode, preserveAlert = false) {
       mode = newMode;
+      if (!preserveAlert) hideAlert();
+
       if (mode === 'signup') {
         tabSignUp.classList.add('active');
         tabSignIn.classList.remove('active');
         authTitle.textContent = 'Create an Account';
-        authSubtitle.textContent = 'Get started with your free FocusFlow workspace';
-        nameGroup.style.display = 'block';
+        authSubtitle.textContent = 'Register your credentials before signing in';
+        nameGroup.style.display = 'flex';
+        confirmPasswordGroup.style.display = 'flex';
+        rememberRow.style.display = 'none';
+        forgotPasswordLink.style.display = 'none';
         submitBtnText.textContent = 'Create Account';
         toggleModeText.textContent = 'Already have an account?';
-        switchModeBtn.textContent = 'Sign In';
+        switchModeBtn.textContent = 'Sign in with your account';
+        nameInput.focus();
       } else {
         tabSignIn.classList.add('active');
         tabSignUp.classList.remove('active');
-        authTitle.textContent = 'Welcome Back';
-        authSubtitle.textContent = 'Enter your credentials to access your workspace';
+        authTitle.textContent = 'Sign In';
+        authSubtitle.textContent = 'Authenticate with your registered account';
         nameGroup.style.display = 'none';
-        submitBtnText.textContent = 'Sign In to Workspace';
-        toggleModeText.textContent = "Don't have an account?";
-        switchModeBtn.textContent = 'Create one free';
+        confirmPasswordGroup.style.display = 'none';
+        rememberRow.style.display = 'flex';
+        forgotPasswordLink.style.display = 'inline';
+        submitBtnText.textContent = 'Authenticate & Sign In';
+        toggleModeText.textContent = "Don't have an account yet?";
+        switchModeBtn.textContent = 'Create an account first';
+        emailInput.focus();
       }
     }
 
-    tabSignIn.addEventListener('click', () => setMode('signin'));
+    tabSignIn.addEventListener('click', () => {
+      // Check if any accounts exist
+      const users = getRegisteredUsers();
+      if (users.length === 0) {
+        showAlert('info', 'ℹ️', 'No accounts found on this device! Please <button type="button" class="alert-link-btn" data-target-mode="signup">Create an Account</button> first.');
+      }
+      setMode('signin', true);
+    });
+
     tabSignUp.addEventListener('click', () => setMode('signup'));
     switchModeBtn.addEventListener('click', () => setMode(mode === 'signin' ? 'signup' : 'signin'));
 
-    // Toggle Password Visibility
+    // Toggle Passwords
     togglePasswordBtn.addEventListener('click', () => {
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
-      togglePasswordBtn.textContent = isPassword ? '🙈' : '👁️';
+      const isPass = passwordInput.type === 'password';
+      passwordInput.type = isPass ? 'text' : 'password';
+      togglePasswordBtn.textContent = isPass ? '🙈' : '👁️';
     });
 
-    // Save session & redirect
-    function completeLogin(user) {
-      localStorage.setItem('focusflow_user', JSON.stringify(user));
-      showToast(`Welcome, ${user.name}! Redirecting...`, '🚀');
-      setTimeout(() => {
-        window.location.href = 'index.html?login=success';
-      }, 800);
-    }
-
-    // Form submit
-    authForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-      const name = nameInput.value.trim() || email.split('@')[0] || 'Shashi';
-
-      if (!email || !password) {
-        showToast('Please enter both email and password', '⚠️');
-        return;
-      }
-
-      if (password.length < 4) {
-        showToast('Password should be at least 4 characters', '⚠️');
-        return;
-      }
-
-      submitBtnText.textContent = 'Authenticating...';
-      setTimeout(() => {
-        completeLogin({
-          name: name,
-          email: email,
-          avatar: '⚡',
-          loggedInAt: new Date().toISOString()
-        });
-      }, 600);
+    toggleConfirmPasswordBtn.addEventListener('click', () => {
+      const isPass = confirmPasswordInput.type === 'password';
+      confirmPasswordInput.type = isPass ? 'text' : 'password';
+      toggleConfirmPasswordBtn.textContent = isPass ? '🙈' : '👁️';
     });
 
-    // Demo One-Click Login
-    demoLoginBtn.addEventListener('click', () => {
-      completeLogin({
-        name: 'Shashi',
-        email: 'shashikl7022@github.io',
-        avatar: '⚡',
-        loggedInAt: new Date().toISOString()
-      });
-    });
-
-    // GitHub & Google Quick Simulation
-    githubLoginBtn.addEventListener('click', () => {
-      completeLogin({
-        name: 'shashikl7022',
-        email: 'shashikl7022@github.com',
-        avatar: '🐙',
-        provider: 'github',
-        loggedInAt: new Date().toISOString()
-      });
-    });
-
-    googleLoginBtn.addEventListener('click', () => {
-      completeLogin({
-        name: 'Google User',
-        email: 'user@gmail.com',
-        avatar: '🌐',
-        provider: 'google',
-        loggedInAt: new Date().toISOString()
-      });
-    });
-
+    // Forgot password handler
     forgotPasswordLink.addEventListener('click', (e) => {
       e.preventDefault();
-      const email = prompt('Enter your email address to reset password:');
-      if (email) {
-        showToast(`Password reset link sent to ${email}`, '📧');
+      const email = emailInput.value.trim() || prompt('Enter your registered email:');
+      if (!email) return;
+      const users = getRegisteredUsers();
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (user) {
+        showAlert('info', '🔑', `Your registered password is: <strong>${escapeHtml(user.password)}</strong> (For testing/demo purposes)`);
+      } else {
+        showAlert('error', '❌', `No account found for "${escapeHtml(email)}". Please <button type="button" class="alert-link-btn" data-target-mode="signup">Create an Account</button>.`);
       }
     });
+
+    // Form Submission & Authentication
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passwordInput.value;
+      const users = getRegisteredUsers();
+
+      // ====================================
+      // 1. CREATE ACCOUNT MODE
+      // ====================================
+      if (mode === 'signup') {
+        const name = nameInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value;
+
+        // Validation: Name
+        if (!name || name.length < 2) {
+          showAlert('error', '⚠️', 'Please enter your Full Name (at least 2 characters).');
+          nameInput.focus();
+          return;
+        }
+
+        // Validation: Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+          showAlert('error', '⚠️', 'Please enter a valid email address (e.g. name@example.com).');
+          emailInput.focus();
+          return;
+        }
+
+        // Validation: Password length
+        if (!password || password.length < 6) {
+          showAlert('error', '⚠️', 'Password must be at least 6 characters long.');
+          passwordInput.focus();
+          return;
+        }
+
+        // Validation: Password match
+        if (password !== confirmPassword) {
+          showAlert('error', '⚠️', 'Passwords do not match! Please check and confirm your password.');
+          confirmPasswordInput.focus();
+          return;
+        }
+
+        // Check for duplicate email
+        const existing = users.find(u => u.email.toLowerCase() === email);
+        if (existing) {
+          showAlert('error', '⚠️', `An account with this email already exists! <button type="button" class="alert-link-btn" data-target-mode="signin">Click here to Sign In</button>.`);
+          return;
+        }
+
+        // Registration success!
+        const newUser = {
+          id: Date.now(),
+          name: name,
+          email: email,
+          password: password,
+          createdAt: new Date().toISOString()
+        };
+
+        users.push(newUser);
+        saveRegisteredUsers(users);
+
+        showToast(`🎉 Account created for ${name}!`, '✅');
+        showAlert('success', '🎉', `Account created successfully! You can now <button type="button" class="alert-link-btn" data-target-mode="signin">Sign In</button> with your credentials.`);
+
+        // Switch to Sign In mode with prefilled values
+        setTimeout(() => {
+          setMode('signin', true);
+          emailInput.value = email;
+          passwordInput.value = '';
+          passwordInput.focus();
+        }, 1200);
+
+        return;
+      }
+
+      // ====================================
+      // 2. SIGN IN (AUTHENTICATION) MODE
+      // ====================================
+      if (mode === 'signin') {
+        if (!email) {
+          showAlert('error', '⚠️', 'Please enter your email address.');
+          emailInput.focus();
+          return;
+        }
+
+        if (!password) {
+          showAlert('error', '⚠️', 'Please enter your password.');
+          passwordInput.focus();
+          return;
+        }
+
+        // 1. CHECK IF ACCOUNT EXISTS
+        const user = users.find(u => u.email.toLowerCase() === email);
+
+        if (!user) {
+          // ACCOUNT NOT FOUND: MUST CREATE ACCOUNT FIRST!
+          showAlert('error', '❌', `<strong>Account not found!</strong> No registered account matches <em>${escapeHtml(email)}</em>. You must <button type="button" class="alert-link-btn" data-target-mode="signup">Create an Account</button> first before logging in.`);
+          showToast('Account not found. Please create account first!', '❌');
+          return;
+        }
+
+        // 2. CHECK PASSWORD AUTHENTICATION
+        if (user.password !== password) {
+          showAlert('error', '❌', '<strong>Authentication failed!</strong> Incorrect password. Please check your password and try again.');
+          showToast('Incorrect password', '❌');
+          passwordInput.focus();
+          return;
+        }
+
+        // 3. AUTHENTICATION SUCCESSFUL!
+        showAlert('success', '✅', `<strong>Authentication successful!</strong> Welcome back, ${escapeHtml(user.name)}. Redirecting to your workspace...`);
+        submitBtnText.textContent = '✓ Authenticated! Redirecting...';
+
+        // Store active session
+        localStorage.setItem('focusflow_user', JSON.stringify({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatar: '⚡',
+          loggedInAt: new Date().toISOString()
+        }));
+
+        showToast(`Welcome back, ${user.name}!`, '🚀');
+
+        setTimeout(() => {
+          window.location.href = 'index.html?login=success';
+        }, 900);
+      }
+    });
+
+    // Initialization check
+    updateRegisteredAccountsCounter();
+
+    // Check if user already has registered accounts
+    const initialUsers = getRegisteredUsers();
+    if (initialUsers.length === 0) {
+      // Force Create Account mode first
+      setMode('signup', true);
+      showAlert('info', 'ℹ️', '<strong>Welcome!</strong> Before logging in, you must create an account first. Fill out the form below to get started.');
+    } else {
+      // If accounts already exist on this device, default to Sign In
+      setMode('signin', true);
+    }
   </script>
 </body>
 </html>
