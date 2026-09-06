@@ -969,6 +969,57 @@
   });
 
   // ==========================================
+  // 14B. USER AUTHENTICATION STATE
+  // ==========================================
+  const authHeaderContainer = document.getElementById('authHeaderContainer');
+
+  function renderAuthState() {
+    if (!authHeaderContainer) return;
+    try {
+      const user = JSON.parse(localStorage.getItem('focusflow_user'));
+      if (user && user.name) {
+        authHeaderContainer.innerHTML = `
+          <div class="user-profile-header">
+            <span class="user-avatar-tag">${escapeHtml(user.avatar || '⚡')}</span>
+            <span>${escapeHtml(user.name)}</span>
+            <button id="logoutBtn" class="logout-link" title="Sign out">Log Out</button>
+          </div>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          localStorage.removeItem('focusflow_user');
+          renderAuthState();
+          showToast('Signed out of workspace', '👋');
+        });
+        return;
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+
+    // Default: Log In button
+    authHeaderContainer.innerHTML = `
+      <a href="login.html" id="loginBtn" class="btn btn-sm btn-primary auth-btn" title="Log In to Workspace">
+        <span>👤</span> <span>Log In</span>
+      </a>
+    `;
+  }
+
+  function checkLoginRedirect() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'success') {
+      try {
+        const user = JSON.parse(localStorage.getItem('focusflow_user'));
+        const userName = user && user.name ? user.name : '';
+        showToast(`Welcome ${userName}! Signed in successfully.`, '🎉');
+      } catch (e) {
+        showToast('Signed in successfully!', '🎉');
+      }
+      // Clean query parameter without page reload
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+
+  // ==========================================
   // 15. INITIALIZATION
   // ==========================================
   function init() {
@@ -982,6 +1033,8 @@
     generateRandomPalette();
     setupCalculators();
     updateDashboardStats();
+    renderAuthState();
+    checkLoginRedirect();
   }
 
   // Run on DOM ready

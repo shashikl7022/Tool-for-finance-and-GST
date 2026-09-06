@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In | FocusFlow Hub</title>
+  <meta name="description" content="Log in to your FocusFlow workspace to sync your focus sessions, tasks, and notes across devices.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body class="auth-page">
+  <!-- Background Glows -->
+  <div class="bg-glow glow-1" aria-hidden="true"></div>
+  <div class="bg-glow glow-2" aria-hidden="true"></div>
+
+  <div class="auth-wrapper">
+    <!-- Back to App Link -->
+    <a href="index.html" class="auth-back-link">
+      <span>&larr;</span> Back to FocusFlow
+    </a>
+
+    <div class="card auth-card">
+      <div class="auth-header">
+        <div class="auth-brand-icon">⚡</div>
+        <h1 id="authTitle">Welcome Back</h1>
+        <p class="auth-subtitle" id="authSubtitle">Enter your credentials to access your workspace</p>
+      </div>
+
+      <!-- Mode Switcher Tabs (Sign In / Sign Up) -->
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" id="tabSignIn" role="tab" aria-selected="true">Sign In</button>
+        <button type="button" class="auth-tab" id="tabSignUp" role="tab" aria-selected="false">Create Account</button>
+      </div>
+
+      <!-- Login / Signup Form -->
+      <form id="authForm" class="auth-form" novalidate>
+        <!-- Name Field (for Sign Up only) -->
+        <div class="form-group" id="nameGroup" style="display: none;">
+          <label for="nameInput">Full Name</label>
+          <div class="input-with-icon">
+            <span class="input-icon">👤</span>
+            <input type="text" id="nameInput" class="form-input" placeholder="e.g. Shashi" autocomplete="name">
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="emailInput">Email Address</label>
+          <div class="input-with-icon">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="emailInput" class="form-input" placeholder="you@example.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <div class="label-row">
+            <label for="passwordInput">Password</label>
+            <a href="#" id="forgotPasswordLink" class="btn-link sm-link">Forgot?</a>
+          </div>
+          <div class="input-with-icon">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Toggle password visibility">👁️</button>
+          </div>
+        </div>
+
+        <!-- Remember Me Checkbox -->
+        <div class="form-row-remember" id="rememberRow">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Remember this device</span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-large full-width" id="submitAuthBtn">
+          <span id="submitBtnText">Sign In to Workspace</span>
+        </button>
+
+        <!-- Quick One-Click Demo Login -->
+        <button type="button" class="btn btn-secondary full-width demo-btn" id="demoLoginBtn">
+          ⚡ One-Click Demo Login (Instant Access)
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="auth-divider">
+        <span>OR CONTINUE WITH</span>
+      </div>
+
+      <!-- Social Login Buttons -->
+      <div class="social-login-grid">
+        <button type="button" class="btn btn-secondary social-btn" id="githubLoginBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </button>
+        <button type="button" class="btn btn-secondary social-btn" id="googleLoginBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          Google
+        </button>
+      </div>
+
+      <!-- Footer Help -->
+      <div class="auth-footer-help">
+        <span id="toggleModeText">Don't have an account?</span>
+        <button type="button" class="btn-link" id="switchModeBtn">Create one free</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script>
+    // Theme setup from parent app
+    const savedTheme = localStorage.getItem('focusflow_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // DOM references
+    const tabSignIn = document.getElementById('tabSignIn');
+    const tabSignUp = document.getElementById('tabSignUp');
+    const authTitle = document.getElementById('authTitle');
+    const authSubtitle = document.getElementById('authSubtitle');
+    const nameGroup = document.getElementById('nameGroup');
+    const nameInput = document.getElementById('nameInput');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const submitBtnText = document.getElementById('submitBtnText');
+    const authForm = document.getElementById('authForm');
+    const switchModeBtn = document.getElementById('switchModeBtn');
+    const toggleModeText = document.getElementById('toggleModeText');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const demoLoginBtn = document.getElementById('demoLoginBtn');
+    const githubLoginBtn = document.getElementById('githubLoginBtn');
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    const toastContainer = document.getElementById('toastContainer');
+
+    let mode = 'signin'; // 'signin' | 'signup'
+
+    function showToast(message, icon = '✨') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      if (mode === 'signup') {
+        tabSignUp.classList.add('active');
+        tabSignIn.classList.remove('active');
+        authTitle.textContent = 'Create an Account';
+        authSubtitle.textContent = 'Get started with your free FocusFlow workspace';
+        nameGroup.style.display = 'block';
+        submitBtnText.textContent = 'Create Account';
+        toggleModeText.textContent = 'Already have an account?';
+        switchModeBtn.textContent = 'Sign In';
+      } else {
+        tabSignIn.classList.add('active');
+        tabSignUp.classList.remove('active');
+        authTitle.textContent = 'Welcome Back';
+        authSubtitle.textContent = 'Enter your credentials to access your workspace';
+        nameGroup.style.display = 'none';
+        submitBtnText.textContent = 'Sign In to Workspace';
+        toggleModeText.textContent = "Don't have an account?";
+        switchModeBtn.textContent = 'Create one free';
+      }
+    }
+
+    tabSignIn.addEventListener('click', () => setMode('signin'));
+    tabSignUp.addEventListener('click', () => setMode('signup'));
+    switchModeBtn.addEventListener('click', () => setMode(mode === 'signin' ? 'signup' : 'signin'));
+
+    // Toggle Password Visibility
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      togglePasswordBtn.textContent = isPassword ? '🙈' : '👁️';
+    });
+
+    // Save session & redirect
+    function completeLogin(user) {
+      localStorage.setItem('focusflow_user', JSON.stringify(user));
+      showToast(`Welcome, ${user.name}! Redirecting...`, '🚀');
+      setTimeout(() => {
+        window.location.href = 'index.html?login=success';
+      }, 800);
+    }
+
+    // Form submit
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const name = nameInput.value.trim() || email.split('@')[0] || 'Shashi';
+
+      if (!email || !password) {
+        showToast('Please enter both email and password', '⚠️');
+        return;
+      }
+
+      if (password.length < 4) {
+        showToast('Password should be at least 4 characters', '⚠️');
+        return;
+      }
+
+      submitBtnText.textContent = 'Authenticating...';
+      setTimeout(() => {
+        completeLogin({
+          name: name,
+          email: email,
+          avatar: '⚡',
+          loggedInAt: new Date().toISOString()
+        });
+      }, 600);
+    });
+
+    // Demo One-Click Login
+    demoLoginBtn.addEventListener('click', () => {
+      completeLogin({
+        name: 'Shashi',
+        email: 'shashikl7022@github.io',
+        avatar: '⚡',
+        loggedInAt: new Date().toISOString()
+      });
+    });
+
+    // GitHub & Google Quick Simulation
+    githubLoginBtn.addEventListener('click', () => {
+      completeLogin({
+        name: 'shashikl7022',
+        email: 'shashikl7022@github.com',
+        avatar: '🐙',
+        provider: 'github',
+        loggedInAt: new Date().toISOString()
+      });
+    });
+
+    googleLoginBtn.addEventListener('click', () => {
+      completeLogin({
+        name: 'Google User',
+        email: 'user@gmail.com',
+        avatar: '🌐',
+        provider: 'google',
+        loggedInAt: new Date().toISOString()
+      });
+    });
+
+    forgotPasswordLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const email = prompt('Enter your email address to reset password:');
+      if (email) {
+        showToast(`Password reset link sent to ${email}`, '📧');
+      }
+    });
+  </script>
+</body>
+</html>
